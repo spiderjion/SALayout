@@ -26,8 +26,9 @@
 	// Do any additional setup after loading the view, typically from a nib.
     self.title = @"LayoutTest";
     
-    _testView.portraitFrame = _testView.frame;
-    _testView.landscapeFrame = CGRectMake(20, 38, 440, 192);
+    //设置横竖屏的frame(非必要)
+//    _testView.portraitFrame = _testView.frame;
+//    _testView.landscapeFrame = CGRectMake(20, 38, 440, 192);
     
     [_testView setSubViews];
 }

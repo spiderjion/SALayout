@@ -37,7 +37,8 @@ typedef enum
 
 /*!
  @brief     存储子View的frame的字典。frame以NSString的方式存储，该frame是当前屏幕方向显示以外的另外一个frame
- （横屏时候存储竖屏frame，反之亦然），key是该子控件本身，需要设置初始值。
+ （横屏时候存储竖屏frame，反之亦然），key是该子控件本身（由于UI控件没有实现NSCopying协议，现在用description作为key。
+ 如果实现了NSCopying协议，则key是本身），需要设置初始值。
  */
 @property (nonatomic, retain) NSMutableDictionary *subViewFrameDictionary;
 
@@ -78,7 +79,9 @@ void layoutSubViews(UIView<SAViewRotationProtocol> *view)
         case PDViewInterfaceOrientationPortrait:
         case PDViewInterfaceOrientationPortraitUpsideDown:
         {
-            view.frame = view.portraitFrame;
+            if (!CGRectEqualToRect(view.portraitFrame, CGRectZero)) {
+                view.frame = view.portraitFrame;
+            }
             [view.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 if ([obj isKindOfClass:[UIView class]])
                 {
@@ -98,7 +101,9 @@ void layoutSubViews(UIView<SAViewRotationProtocol> *view)
         case PDViewInterfaceOrientationLandscapeLeft:
         case PDViewInterfaceOrientationLandscapeRight:
         {
-            view.frame = view.landscapeFrame;
+            if (!CGRectEqualToRect(view.landscapeFrame, CGRectZero)) {
+                view.frame = view.landscapeFrame;
+            }
             [view.subviews enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 if ([obj isKindOfClass:[UIView class]])
                 {
